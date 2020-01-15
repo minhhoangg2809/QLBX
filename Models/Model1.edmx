@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QLBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CheckInOut">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="license" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cardId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="checkInTime" Type="datetime" />
+          <Property Name="checkOutTime" Type="datetime" />
+          <Property Name="pricesId" Type="int" />
+          <Property Name="checkInUserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="checkOutUserName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Price">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="veh_type" Type="nvarchar" MaxLength="100" />
+          <Property Name="price" Type="int" />
+        </EntityType>
+        <EntityType Name="Spellduty">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="startTime" Type="datetime" />
+          <Property Name="endTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Spellduty_User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="spelldutyId" Type="int" />
+          <Property Name="usersId" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="users_id" />
+          </Key>
+          <Property Name="users_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="500" />
+          <Property Name="born" Type="date" />
+          <Property Name="user_address" Type="nvarchar" MaxLength="500" />
+          <Property Name="phone" Type="varchar" MaxLength="15" />
+          <Property Name="acc" Type="varchar" MaxLength="50" />
+          <Property Name="user_role" Type="int" />
+          <Property Name="pass" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_CheckInOut_Price">
+          <End Role="Price" Type="Self.Price" Multiplicity="0..1" />
+          <End Role="CheckInOut" Type="Self.CheckInOut" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Price">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CheckInOut">
+              <PropertyRef Name="pricesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_duty_spell">
+          <End Role="Spellduty" Type="Self.Spellduty" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Spellduty_User" Type="Self.Spellduty_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spellduty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Spellduty_User">
+              <PropertyRef Name="spelldutyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user_spell">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Spellduty_User" Type="Self.Spellduty_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="users_id" />
+            </Principal>
+            <Dependent Role="Spellduty_User">
+              <PropertyRef Name="usersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLBXModelStoreContainer">
+          <EntitySet Name="CheckInOut" EntityType="Self.CheckInOut" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Price" EntityType="Self.Price" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Spellduty" EntityType="Self.Spellduty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Spellduty_User" EntityType="Self.Spellduty_User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CheckInOut_Price" Association="Self.FK_CheckInOut_Price">
+            <End Role="Price" EntitySet="Price" />
+            <End Role="CheckInOut" EntitySet="CheckInOut" />
+          </AssociationSet>
+          <AssociationSet Name="fk_duty_spell" Association="Self.fk_duty_spell">
+            <End Role="Spellduty" EntitySet="Spellduty" />
+            <End Role="Spellduty_User" EntitySet="Spellduty_User" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user_spell" Association="Self.fk_user_spell">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Spellduty_User" EntitySet="Spellduty_User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="QLBXEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CheckInOuts" EntityType="QLBXModel.CheckInOut" />
+          <EntitySet Name="Prices" EntityType="QLBXModel.Price" />
+          <EntitySet Name="Spellduties" EntityType="QLBXModel.Spellduty" />
+          <EntitySet Name="Spellduty_User" EntityType="QLBXModel.Spellduty_User" />
+          <EntitySet Name="sysdiagrams" EntityType="QLBXModel.sysdiagram" />
+          <EntitySet Name="Users" EntityType="QLBXModel.User" />
+          <AssociationSet Name="FK_CheckInOut_Price" Association="QLBXModel.FK_CheckInOut_Price">
+            <End Role="Price" EntitySet="Prices" />
+            <End Role="CheckInOut" EntitySet="CheckInOuts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_duty_spell" Association="QLBXModel.fk_duty_spell">
+            <End Role="Spellduty" EntitySet="Spellduties" />
+            <End Role="Spellduty_User" EntitySet="Spellduty_User" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user_spell" Association="QLBXModel.fk_user_spell">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Spellduty_User" EntitySet="Spellduty_User" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CheckInOut">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="license" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cardId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="checkInTime" Type="DateTime" Precision="3" />
+          <Property Name="checkOutTime" Type="DateTime" Precision="3" />
+          <Property Name="pricesId" Type="Int32" />
+          <Property Name="checkInUserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="checkOutUserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Price" Relationship="QLBXModel.FK_CheckInOut_Price" FromRole="CheckInOut" ToRole="Price" />
+        </EntityType>
+        <EntityType Name="Price">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="veh_type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="price1" Type="Int32" />
+          <NavigationProperty Name="CheckInOuts" Relationship="QLBXModel.FK_CheckInOut_Price" FromRole="Price" ToRole="CheckInOut" />
+        </EntityType>
+        <EntityType Name="Spellduty">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="startTime" Type="DateTime" Precision="3" />
+          <Property Name="endTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Spellduty_User" Relationship="QLBXModel.fk_duty_spell" FromRole="Spellduty" ToRole="Spellduty_User" />
+        </EntityType>
+        <EntityType Name="Spellduty_User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="spelldutyId" Type="Int32" />
+          <Property Name="usersId" Type="Int32" />
+          <NavigationProperty Name="Spellduty" Relationship="QLBXModel.fk_duty_spell" FromRole="Spellduty_User" ToRole="Spellduty" />
+          <NavigationProperty Name="User" Relationship="QLBXModel.fk_user_spell" FromRole="Spellduty_User" ToRole="User" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="users_id" />
+          </Key>
+          <Property Name="users_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="born" Type="DateTime" Precision="0" />
+          <Property Name="user_address" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="acc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="user_role" Type="Int32" />
+          <Property Name="pass" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Spellduty_User" Relationship="QLBXModel.fk_user_spell" FromRole="User" ToRole="Spellduty_User" />
+        </EntityType>
+        <Association Name="FK_CheckInOut_Price">
+          <End Type="QLBXModel.Price" Role="Price" Multiplicity="0..1" />
+          <End Type="QLBXModel.CheckInOut" Role="CheckInOut" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Price">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CheckInOut">
+              <PropertyRef Name="pricesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_duty_spell">
+          <End Type="QLBXModel.Spellduty" Role="Spellduty" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="QLBXModel.Spellduty_User" Role="Spellduty_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spellduty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Spellduty_User">
+              <PropertyRef Name="spelldutyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user_spell">
+          <End Type="QLBXModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="QLBXModel.Spellduty_User" Role="Spellduty_User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="users_id" />
+            </Principal>
+            <Dependent Role="Spellduty_User">
+              <PropertyRef Name="usersId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLBXModelStoreContainer" CdmEntityContainer="QLBXEntities">
+          <EntitySetMapping Name="CheckInOuts">
+            <EntityTypeMapping TypeName="QLBXModel.CheckInOut">
+              <MappingFragment StoreEntitySet="CheckInOut">
+                <ScalarProperty Name="checkOutUserName" ColumnName="checkOutUserName" />
+                <ScalarProperty Name="checkInUserName" ColumnName="checkInUserName" />
+                <ScalarProperty Name="pricesId" ColumnName="pricesId" />
+                <ScalarProperty Name="checkOutTime" ColumnName="checkOutTime" />
+                <ScalarProperty Name="checkInTime" ColumnName="checkInTime" />
+                <ScalarProperty Name="cardId" ColumnName="cardId" />
+                <ScalarProperty Name="license" ColumnName="license" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prices">
+            <EntityTypeMapping TypeName="QLBXModel.Price">
+              <MappingFragment StoreEntitySet="Price">
+                <ScalarProperty Name="price1" ColumnName="price" />
+                <ScalarProperty Name="veh_type" ColumnName="veh_type" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Spellduties">
+            <EntityTypeMapping TypeName="QLBXModel.Spellduty">
+              <MappingFragment StoreEntitySet="Spellduty">
+                <ScalarProperty Name="endTime" ColumnName="endTime" />
+                <ScalarProperty Name="startTime" ColumnName="startTime" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Spellduty_User">
+            <EntityTypeMapping TypeName="QLBXModel.Spellduty_User">
+              <MappingFragment StoreEntitySet="Spellduty_User">
+                <ScalarProperty Name="usersId" ColumnName="usersId" />
+                <ScalarProperty Name="spelldutyId" ColumnName="spelldutyId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="QLBXModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="QLBXModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="pass" ColumnName="pass" />
+                <ScalarProperty Name="user_role" ColumnName="user_role" />
+                <ScalarProperty Name="acc" ColumnName="acc" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="user_address" ColumnName="user_address" />
+                <ScalarProperty Name="born" ColumnName="born" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="users_id" ColumnName="users_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

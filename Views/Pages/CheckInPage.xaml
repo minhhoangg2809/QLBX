@@ -1,0 +1,247 @@
+﻿<Page x:Class="QLBX.Views.Pages.CheckInPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+      xmlns:Emgui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="1000"
+	  Title="CheckInOutPage" 
+      DataContext="{StaticResource vmCheckInOut}"
+      Name="page">
+
+    <Page.Resources>
+        <Storyboard x:Key="Start">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pagecontent">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="End">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="pagecontent">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Loaded" SourceName="page">
+            <BeginStoryboard x:Name="Start" Storyboard="{StaticResource Start}"/>
+            <BeginStoryboard x:Name="End" Storyboard="{StaticResource End}"/>
+        </EventTrigger>
+    </Page.Triggers>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding Load_Command}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid x:Name="pagecontent" Opacity="1">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.65*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <WindowsFormsHost Name="hostImg1" Margin="10" Grid.Column="0" Grid.Row="0" Height="200" Background="White">
+                    <WindowsFormsHost.Child>
+                        <Emgui:ImageBox Name="imgBox1" BorderStyle="Fixed3D"/>
+                    </WindowsFormsHost.Child>
+                </WindowsFormsHost>
+
+                <WindowsFormsHost Name="hostPic2" Margin="10" Grid.Column="0" Grid.Row="1" Height="200" Background="White">
+                    <WindowsFormsHost.Child>
+                        <wf:PictureBox Name="picBox2" BorderStyle="Fixed3D"/>
+                    </WindowsFormsHost.Child>
+                </WindowsFormsHost>
+
+                <WindowsFormsHost Name="hostPic1" Margin="10" Grid.Column="1" Grid.Row="0" Height="200" Background="White">
+                    <WindowsFormsHost.Child>
+                        <wf:PictureBox Name="picBox1" BorderStyle="Fixed3D"/>
+                    </WindowsFormsHost.Child>
+                </WindowsFormsHost>
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="0 50 0 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Biển số sau khi nhận dạng" Foreground="Red" FontSize="15" FontWeight="SemiBold"/>
+                    <materialDesign:Card Grid.Row="1" Margin="0 10 0 0" Height="100">
+                        <TextBlock Name="tblNhandien" 
+                               FontSize="25" 
+                               FontWeight="SemiBold" 
+                               Foreground="Red" 
+                               Width="auto" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Center"
+                               Text="{Binding BiensoNhandang,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                    </materialDesign:Card>
+                </Grid>
+                <Grid Grid.Row="1" Margin="10">
+                    <Button Height="50" VerticalAlignment="Top" Content="Nhận dạng biển số" Click="Button_Click" Background="#FF1A99D6"/>
+                </Grid>
+                <Grid Grid.Row="2" Margin="10">
+                    <materialDesign:Card Height="50" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="5"/>
+                            <materialDesign:PackIcon 
+                            Kind="Checkerboard"
+                            Height="25"
+                            Width="25"
+                            Foreground="Gray"
+                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Stretch"/>
+                            <TextBlock Width="5"/>
+                            <TextBox Name="tbNhandien"
+                                     FontSize="15"
+                                     VerticalContentAlignment="Center"
+                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                     BorderBrush="White" BorderThickness="0"
+                                     Text="{Binding BiensoNhandang,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                                <materialDesign:HintAssist.Hint>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Width="5"/>
+                                        <TextBlock Text="Biển số xe" Foreground="Black" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </StackPanel>
+                    </materialDesign:Card>
+                </Grid>
+                <Grid Grid.Row="3" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:Card Grid.Column="0" Height="50" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="5"/>
+                            <materialDesign:PackIcon 
+                                Kind="Barcode"
+                                Height="25"
+                                Width="25"
+                                Foreground="Gray"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"/>
+                            <TextBlock Width="5"/>
+                            <TextBox Name="tbVe"
+                                     FontSize="15"
+                                     VerticalContentAlignment="Center"
+                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                     BorderBrush="White" BorderThickness="0"
+                                     Text="{Binding Thexe,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                                <materialDesign:HintAssist.Hint>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Width="5"/>
+                                        <TextBlock Text="Thẻ xe" Foreground="Black" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </materialDesign:HintAssist.Hint>
+                            </TextBox>
+                        </StackPanel>
+                    </materialDesign:Card>
+                    <Button Grid.Column="1" Height="50" 
+                            Margin="5 0 0 0" 
+                            Background="#FF1A99D6"
+                            Command="{Binding GeneId_Command}">
+                        <materialDesign:PackIcon Kind="BarcodeScan" Width="25" Height="25"/>
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="4" Margin="10">
+                    <materialDesign:Card Height="50" VerticalAlignment="Top">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="5"/>
+                            <materialDesign:PackIcon 
+                                Kind="Caravan"
+                                Height="25"
+                                Width="25"
+                                Foreground="Gray"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"/>
+                            <TextBlock Width="5"/>
+                            <ComboBox IsEditable="True"
+                                FontSize="15" MinWidth="200"
+                                VerticalContentAlignment="Center"
+                                materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                BorderBrush="White" BorderThickness="0"
+                                ItemsSource="{Binding ListType}"
+                                SelectedItem="{Binding SelectedType,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                DisplayMemberPath="veh_type">
+                                <materialDesign:HintAssist.Hint>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Width="5"/>
+                                        <TextBlock Text="Loại xe" Foreground="Black" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </materialDesign:HintAssist.Hint>
+                            </ComboBox>
+                        </StackPanel>
+                    </materialDesign:Card>
+                </Grid>
+                <Grid Grid.Row="5" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="2" VerticalAlignment="Top" Height="45" Background="#FFF23B3B">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding CheckOut_Command}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ArrowUpBoldBoxOutline" Height="25" Width="25"/>
+                            <TextBlock Width="10"/>
+                            <TextBlock Text="Xe ra" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="0" VerticalAlignment="Top" Height="45" Background="#FF2DBB47">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding CheckIn_Command}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ArrowDownBoldBoxOutline" Height="25" Width="25"/>
+                            <TextBlock Width="10"/>
+                            <TextBlock Text="Xe vào"  VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+        <!--thong bao-->
+        <materialDesign:Snackbar
+                 IsActive="{Binding IsActive,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+            <materialDesign:SnackbarMessage
+                Content="{Binding Message,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                ActionContent="OK" 
+                ActionCommand="{Binding CloseAlert_Command}"/>
+        </materialDesign:Snackbar>
+    </Grid>
+</Page>

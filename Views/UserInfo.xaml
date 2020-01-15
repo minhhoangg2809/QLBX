@@ -1,0 +1,134 @@
+﻿<Window x:Class="QLBX.Views.UserInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d"
+        Height="420" Width="350"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        BorderBrush="Gray"
+        BorderThickness="1"
+        x:Name="wd_thongtin"
+        DataContext="{StaticResource vmInfoUser}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadInfor_Command}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0">
+            <materialDesign:ColorZone
+                Mode="PrimaryDark"
+                Padding="16"
+                materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                materialDesign:ShadowAssist.Darken="False"
+                MouseLeftButtonDown="ColorZone_MouseLeftButtonDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"  Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountBox" Height="30" Width="30"/>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Margin="16 0 0 0"
+                            Text="THÔNG TIN TÀI KHOẢN">
+                        </TextBlock>
+                    </StackPanel>
+                    <Button Grid.Column="1"
+                            BorderBrush="{x:Null}"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Content="{materialDesign:PackIcon Kind=Close, Size=30}" 
+                            Width="60" Height="auto"
+                            ToolTip="Đóng"
+                            Click="Button_Click"/>
+                </Grid>
+            </materialDesign:ColorZone>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <materialDesign:Card Grid.Row="1" Margin="5" 
+                                 UniformCornerRadius="6"
+                                 Width="300">
+                <StackPanel Orientation="Vertical" >
+                    <TextBox Width="250"
+                                 Margin="5"
+                                 materialDesign:HintAssist.Hint="Tên đăng nhập"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 Text="{Binding Acc,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+
+                    <PasswordBox Width="250" x:Name="pb_oldCrpass"
+                                 Margin="5"
+                                 materialDesign:HintAssist.Hint="Mật khẩu cũ" 
+                                 Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PasswordChanged">
+                                <i:InvokeCommandAction Command="{Binding CurOldPasswordChange_Command}"
+                                                       CommandParameter="{Binding ElementName=pb_oldCrpass}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </PasswordBox>
+
+                    <PasswordBox Width="250" x:Name="pb_Crpass"
+                                 Margin="5"
+                                 materialDesign:HintAssist.Hint="Mật khẩu mới" 
+                                 Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PasswordChanged">
+                                <i:InvokeCommandAction Command="{Binding CurPasswordChange_Command}"
+                                                       CommandParameter="{Binding ElementName=pb_Crpass}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </PasswordBox>
+
+                    <PasswordBox Width="250" x:Name="pb_reCrpass"
+                                 Margin="5"
+                                 materialDesign:HintAssist.Hint="Nhập lại mật khẩu" 
+                                 Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PasswordChanged">
+                                <i:InvokeCommandAction Command="{Binding CurRePasswordChange_Command}"
+                                                       CommandParameter="{Binding ElementName=pb_reCrpass}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </PasswordBox>
+                    <TextBlock Height="30"/>
+                </StackPanel>
+            </materialDesign:Card>
+            <Button Grid.Row="2" Margin="5 10" Width="250" 
+                    BorderBrush="{x:Null}"
+                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                    Command="{Binding ChangeInfor_Command}"
+                    Content="THAY ĐỔI THÔNG TIN">
+            </Button>
+            <materialDesign:Snackbar Grid.Row="3"
+                                     IsActive="{Binding IsActive,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
+                <materialDesign:SnackbarMessage
+                    Content="{Binding Message,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                    ToolTip="{Binding Message,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                    ActionContent="OK" 
+                    ActionCommand="{Binding CloseAlert_Command}"/>
+            </materialDesign:Snackbar>
+        </Grid>
+
+    </Grid>
+</Window>

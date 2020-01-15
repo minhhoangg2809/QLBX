@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:viewmodel="clr-namespace:QLBX.ViewModels">
+    <viewmodel:ControlBar_ViewModel x:Key="vmControlBar"></viewmodel:ControlBar_ViewModel>
+    <viewmodel:Menu_ViewModel x:Key="vmMenu"></viewmodel:Menu_ViewModel>
+    <viewmodel:Login_ViewModel x:Key="vmLogin"></viewmodel:Login_ViewModel>
+    <viewmodel:CheckInOut_ViewModel x:Key="vmCheckInOut"></viewmodel:CheckInOut_ViewModel>
+    <viewmodel:Home_ViewModel x:Key="vmHome"></viewmodel:Home_ViewModel>
+    <viewmodel:Report_ViewModel x:Key="vmReport"></viewmodel:Report_ViewModel>
+    <viewmodel:User_ViewModel x:Key="vmUser"></viewmodel:User_ViewModel>
+    <viewmodel:UserInfo_ViewModel x:Key="vmInfoUser"></viewmodel:UserInfo_ViewModel>
+    <viewmodel:SpellDuty_ViewModel x:Key="vmSpellduty"></viewmodel:SpellDuty_ViewModel>
+</ResourceDictionary>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ed0223bfd8e8480aae64c860ac3ddd11" Name="Diagram1">
+        <EntityTypeShape EntityType="QLBXModel.CheckInOut" Width="1.5" PointX="5" PointY="4" />
+        <EntityTypeShape EntityType="QLBXModel.Price" Width="1.5" PointX="2.75" PointY="4.5" />
+        <EntityTypeShape EntityType="QLBXModel.Spellduty" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="QLBXModel.Spellduty_User" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="QLBXModel.sysdiagram" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="QLBXModel.User" Width="1.5" PointX="0.75" PointY="5.375" />
+        <AssociationConnector Association="QLBXModel.FK_CheckInOut_Price" />
+        <AssociationConnector Association="QLBXModel.fk_duty_spell" />
+        <AssociationConnector Association="QLBXModel.fk_user_spell" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
