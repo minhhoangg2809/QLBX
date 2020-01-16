@@ -99,8 +99,7 @@
                                Foreground="Red" 
                                Width="auto" 
                                VerticalAlignment="Center" 
-                               HorizontalAlignment="Center"
-                               Text="{Binding BiensoNhandang,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                               HorizontalAlignment="Center"/>
                     </materialDesign:Card>
                 </Grid>
                 <Grid Grid.Row="1" Margin="10">

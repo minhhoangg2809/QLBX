@@ -123,7 +123,8 @@ namespace QLBX.Views.Pages
                     Image<Gray, byte> dst = new Image<Gray, byte>(grayframe);
                     grayframe = dst.ToBitmap();
                     //tạo chuỗi rỗng để hứng
-                    string zz = "";
+                    string upp = "";
+                    string down = "";
 
                     // lọc và sắp xếp số
                     List<Bitmap> bmp = new List<Bitmap>();
@@ -242,7 +243,7 @@ namespace QLBX.Views.Pages
                             temp = clsBSoft.Ocr(ch, false, full_tesseract, num_tesseract, ch_tesseract, false); // nhan dien chu
                         }
 
-                        zz += temp;
+                        upp += temp;
                         box[i].Location = new System.Drawing.Point(x + i * 50, 0);
                         box[i].Size = new System.Drawing.Size(50, 100);
                         box[i].SizeMode = PictureBoxSizeMode.StretchImage;
@@ -255,14 +256,14 @@ namespace QLBX.Views.Pages
                         Bitmap ch = grayframe.Clone(dow[i], grayframe.PixelFormat);
                         string temp = clsBSoft.Ocr(ch, false, full_tesseract, num_tesseract, ch_tesseract, true); // nhan dien so
 
-                        zz += temp;
+                        down += temp;
                         box[i + c_x].Location = new System.Drawing.Point(x + i * 50, 100);
                         box[i + c_x].Size = new System.Drawing.Size(50, 100);
                         box[i + c_x].SizeMode = PictureBoxSizeMode.StretchImage;
                         box[i + c_x].Image = ch;
                     }
-                    tblNhandien.Text = zz.Replace("\n", "");
-                    tbNhandien.Text = zz.Replace("\n", "");
+                    tblNhandien.Text = upp.Replace("\n", "") + "\n" + down.Replace("\n", "");
+                    tbNhandien.Text = upp.Replace("\n", "") + "_" + down.Replace("\n", "");
                 }
             }
             catch (Exception)
@@ -283,11 +284,12 @@ namespace QLBX.Views.Pages
                 pic1.Update();
                 clsBSoft.FindLicensePlate(img, pic1, img1, PlateImagesList, null);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //System.Windows.MessageBox.Show(ex.ToString());
             }
 
         }
+
     }
 }

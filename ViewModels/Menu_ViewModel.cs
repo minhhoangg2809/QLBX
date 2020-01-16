@@ -1,6 +1,8 @@
-﻿using QLBX.Resource;
+﻿using MaterialDesignThemes.Wpf;
+using QLBX.Resource;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,27 +15,11 @@ namespace QLBX.ViewModels
 {
     class Menu_ViewModel : BaseViewModel
     {
-        private int _Admin;
-
-        public int Admin
-        {
-            get { return _Admin; }
-            set { _Admin = value; OnPropertyChanged(); }
-        }
-
         public ICommand Select_Command { get; set; }
-        public ICommand Load_Command { get; set; }
 
         public Menu_ViewModel()
         {
-            Load_Command = new RelayCommand<object>(p =>
-            {
-                return true;
-            }, p =>
-            {
-                
-            });
-
+           
             Select_Command = new RelayCommand<ListView>(p =>
             {
                 return true;
@@ -90,7 +76,5 @@ namespace QLBX.ViewModels
                     break;
             }
         }
-
-
     }
 }

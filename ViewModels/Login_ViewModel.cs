@@ -113,10 +113,10 @@ namespace QLBX.ViewModels
                     }
                     else
                     {
+                        CurrentUser = user;
+
                         Views.Main view = new Views.Main();
                         view.Show();
-
-                        CurrentUser = user;
 
                         Window wd = MyStaticMethods.getWindowParent(p) as Window;
                         if (wd != null)

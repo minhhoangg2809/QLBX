@@ -73,6 +73,10 @@ namespace QLBX.ViewModels
 
 
         #region sort
+        public ICommand SortbyDate_Command { get; set; }
+        public ICommand SortbyTimeSt_Command { get; set; }
+        public ICommand SortbyTimeEn_Command { get; set; }
+
         #endregion
 
         #region add
@@ -348,6 +352,61 @@ namespace QLBX.ViewModels
                 Models.DataProvider.Ins.DB.Spellduty_User.Remove(item);
                 Models.DataProvider.Ins.DB.SaveChanges();
                 ListSpellUser.Remove(item);
+            });
+
+            #endregion
+
+            #region sort
+
+            SortbyDate_Command = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                ObservableCollection<SpelldutyCustom> chkList = new ObservableCollection<SpelldutyCustom>(List.OrderByDescending(x => x.startTime.Value.Date));
+
+                if (List[0] == chkList[0])
+                {
+                    List = new ObservableCollection<SpelldutyCustom>(List.OrderBy(x => x.startTime.Value.Date));
+                }
+                else
+                {
+                    List = chkList;
+                }
+            });
+
+            SortbyTimeSt_Command = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                ObservableCollection<SpelldutyCustom> chkList = new ObservableCollection<SpelldutyCustom>(List.OrderByDescending(x => x.startTime.Value.TimeOfDay));
+
+                if (List[0] == chkList[0])
+                {
+                    List = new ObservableCollection<SpelldutyCustom>(List.OrderBy(x => x.startTime.Value.TimeOfDay));
+                }
+                else
+                {
+                    List = chkList;
+                }
+            });
+
+            SortbyTimeEn_Command = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                ObservableCollection<SpelldutyCustom> chkList = new ObservableCollection<SpelldutyCustom>(List.OrderByDescending(x => x.endTime.Value.TimeOfDay));
+
+                if (List[0] == chkList[0])
+                {
+                    List = new ObservableCollection<SpelldutyCustom>(List.OrderBy(x => x.endTime.Value.TimeOfDay));
+                }
+                else
+                {
+                    List = chkList;
+                }
             });
 
             #endregion
