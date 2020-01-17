@@ -331,11 +331,20 @@ namespace QLBX.ViewModels
                 return true;
             }, p =>
             {
+                Models.Spellduty sp = Models.DataProvider.Ins.DB.Spellduties.Where(x => x.id == SelectedItem.id).SingleOrDefault();
+                if (sp.startTime.Value.Date < DateTime.Today.Date)
+                {
+                    IsUserOpen = false;
+                    IsActive = true;
+                    Message = "Không cập nhật các bản ghi quá hạn";
+                    return;
+                }
+
                 Spellduty_User item = new Spellduty_User()
-                     {
-                         spelldutyId = SelectedItem.id,
-                         User = SelectedUser
-                     };
+                 {
+                     spelldutyId = SelectedItem.id,
+                     User = SelectedUser
+                 };
                 Models.DataProvider.Ins.DB.Spellduty_User.Add(item);
                 Models.DataProvider.Ins.DB.SaveChanges();
                 ListSpellUser.Add(item);
@@ -346,6 +355,15 @@ namespace QLBX.ViewModels
                 return true;
             }, p =>
             {
+                Models.Spellduty sp = Models.DataProvider.Ins.DB.Spellduties.Where(x => x.id == SelectedItem.id).SingleOrDefault();
+                if (sp.startTime.Value.Date < DateTime.Today.Date)
+                {
+                    IsUserOpen = false;
+                    IsActive = true;
+                    Message = "Không cập nhật các bản ghi quá hạn";
+                    return;
+                }
+
                 int userId = Convert.ToInt32(p.Uid);
                 int spellId = SelectedItem.id;
                 Spellduty_User item = Models.DataProvider.Ins.DB.Spellduty_User.Where(x => x.Spellduty.id == spellId && x.User.users_id == userId).SingleOrDefault();

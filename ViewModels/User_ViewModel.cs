@@ -337,6 +337,7 @@ namespace QLBX.ViewModels
             }, p =>
             {
                 SelectedItem = new UserCustom();
+                SelectedRole = "Nhân viên";
                 IsAdd = true;
             });
 
@@ -408,6 +409,7 @@ namespace QLBX.ViewModels
             {
                 SelectedItem = new UserCustom();
                 SelectedItem = List.Where(x => x.users_id == Convert.ToInt32(p.Uid)).SingleOrDefault();
+                SelectedRole = SelectedItem.user_role == 1 ? "Quản trị" : "Nhân viên";
                 IsUpdate = true;
             });
 
