@@ -19,7 +19,6 @@ namespace QLBX.ViewModels
 
         public Menu_ViewModel()
         {
-           
             Select_Command = new RelayCommand<ListView>(p =>
             {
                 return true;

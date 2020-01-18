@@ -9,7 +9,6 @@
              x:Name="ucMenu"
              d:DesignHeight="300" d:DesignWidth="300"
              DataContext="{StaticResource vmMenu}">
-
     <Grid>
         <ListView x:Name="ListViewMenu" Foreground="#FF5C99D6"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">

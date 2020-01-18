@@ -291,11 +291,29 @@ namespace QLBX.ViewModels
                 }
                 if (!String.IsNullOrEmpty(TimeStart))
                 {
-                    List = new ObservableCollection<SpelldutyCustom>(List.Where(x => x.startTime.Value >= MyStaticMethods.ConvertTime(TimeStart)));
+                    List = new ObservableCollection<SpelldutyCustom>(List.Where(x =>
+                    {
+                        if (!String.IsNullOrEmpty(Date))
+                        {
+                            DateTime dt = Convert.ToDateTime(Date);
+                            DateTime conDt = MyStaticMethods.ConvertTime(TimeStart, dt);
+                            return x.startTime.Value >= conDt;
+                        }
+                        return x.startTime.Value >= MyStaticMethods.ConvertTime(TimeStart);
+                    }));
                 }
                 if (!String.IsNullOrEmpty(TimeEnd))
                 {
-                    List = new ObservableCollection<SpelldutyCustom>(List.Where(x => x.endTime.Value <= MyStaticMethods.ConvertTime(TimeEnd)));
+                    List = new ObservableCollection<SpelldutyCustom>(List.Where(x => 
+                    {
+                        if (!String.IsNullOrEmpty(Date))
+                        {
+                            DateTime dt = Convert.ToDateTime(Date);
+                            DateTime conDt = MyStaticMethods.ConvertTime(TimeEnd, dt);
+                            return x.endTime.Value <= conDt;
+                        }
+                        return x.endTime.Value <= MyStaticMethods.ConvertTime(TimeEnd);
+                    }));
                 }
             });
 
