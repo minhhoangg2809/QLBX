@@ -126,9 +126,6 @@ namespace QLBX.ViewModels
                 if (Thexe.Length != 5)
                     return false;
 
-                if (SelectedType == null)
-                    return false;
-
                 if (String.IsNullOrEmpty(BiensoNhandang) || String.IsNullOrEmpty(Thexe))
                     return false;
 
