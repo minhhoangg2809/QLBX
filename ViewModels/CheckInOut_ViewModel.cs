@@ -27,6 +27,13 @@ namespace QLBX.ViewModels
             set { _SelectedType = value; OnPropertyChanged(); }
         }
 
+        private Models.CheckInOut _SelectedItem;
+
+        public Models.CheckInOut SelectedItem
+        {
+            get { return _SelectedItem; }
+            set { _SelectedItem = value; OnPropertyChanged(); }
+        }
 
         private string _BiensoNhandang;
 
@@ -34,6 +41,22 @@ namespace QLBX.ViewModels
         {
             get { return _BiensoNhandang; }
             set { _BiensoNhandang = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsChkInOpen;
+
+        public bool IsChkInOpen
+        {
+            get { return _IsChkInOpen; }
+            set { _IsChkInOpen = value; OnPropertyChanged(); }
+        }
+
+        private bool _IsChkOutOpen;
+
+        public bool IsChkOutOpen
+        {
+            get { return _IsChkOutOpen; }
+            set { _IsChkOutOpen = value; OnPropertyChanged(); }
         }
 
         private string _Thexe;
@@ -48,6 +71,9 @@ namespace QLBX.ViewModels
         public ICommand CheckOut_Command { get; set; }
         public ICommand Load_Command { get; set; }
         public ICommand GeneId_Command { get; set; }
+        public ICommand OpenChkIn_Command { get; set; }
+        public ICommand OpenChkOut_Command { get; set; }
+        public ICommand CloseDetail_Command { get; set; }
 
         #region alert
 
@@ -80,11 +106,40 @@ namespace QLBX.ViewModels
             {
                 IsActive = false;
                 Message = String.Empty;
-                BiensoNhandang = String.Empty;
-                Thexe = String.Empty;
+
+                IsChkInOpen = false;
+                IsChkOutOpen = false;
+
+                SelectedItem = new Models.CheckInOut();
 
                 ListType = new ObservableCollection<Models.Price>(Models.DataProvider.Ins.DB.Prices);
                 SelectedType = null;
+            });
+
+            CloseDetail_Command = new RelayCommand<object>(p =>
+            {
+                return true;
+            }, p =>
+            {
+                IsChkInOpen = false;
+                IsChkOutOpen = false;
+            });
+
+            OpenChkIn_Command = new RelayCommand<object>(p =>
+            {
+                if (String.IsNullOrEmpty(BiensoNhandang) || String.IsNullOrEmpty(Thexe))
+                    return false;
+
+                if (SelectedType == null)
+                    return false;
+
+                if (IsChkInOpen == true)
+                    return false;
+
+                return true;
+            }, p =>
+            {
+                IsChkInOpen = true;
             });
 
             CheckIn_Command = new RelayCommand<object>(p =>
@@ -111,22 +166,55 @@ namespace QLBX.ViewModels
                     Models.DataProvider.Ins.DB.CheckInOuts.Add(insertItem);
                     Models.DataProvider.Ins.DB.SaveChanges();
 
+                    IsChkInOpen = false;
+
                     IsActive = true;
                     Message = "Thao tác thành công";
                 }
                 else
                 {
+                    IsChkInOpen = false;
+
                     IsActive = true;
                     Message = "Biển số hoặc mã thẻ đã được thêm";
                 }
             });
 
-            CheckOut_Command = new RelayCommand<object>(p =>
+            OpenChkOut_Command = new RelayCommand<object>(p =>
             {
+                if (IsChkOutOpen == true)
+                    return false;
+
                 if (Thexe.Length != 5)
                     return false;
 
                 if (String.IsNullOrEmpty(BiensoNhandang) || String.IsNullOrEmpty(Thexe))
+                    return false;
+
+                return true;
+            }, p =>
+            {
+                SelectedItem = Models.DataProvider.Ins.DB.CheckInOuts
+                    .Where(x => x.license == BiensoNhandang && x.cardId == Thexe && x.checkOutTime == null)
+                    .SingleOrDefault();
+                if (SelectedItem != null)
+                {
+                    IsChkOutOpen = true;
+                }
+                else
+                {
+                    IsActive = true;
+                    Message = "Không tìm được xe";
+                }
+
+            });
+
+            CheckOut_Command = new RelayCommand<object>(p =>
+            {
+                if (String.IsNullOrEmpty(BiensoNhandang) || String.IsNullOrEmpty(Thexe))
+                    return false;
+
+                if (Thexe.Length != 5)
                     return false;
 
                 return true;
@@ -142,13 +230,10 @@ namespace QLBX.ViewModels
                     updateItem.checkOutUserName = Login_ViewModel.CurrentUser.name;
                     Models.DataProvider.Ins.DB.SaveChanges();
 
+                    IsChkOutOpen = false;
+
                     IsActive = true;
                     Message = "Thao tác thành công";
-                }
-                else
-                {
-                    IsActive = true;
-                    Message = "Không tìm được xe";
                 }
 
             });

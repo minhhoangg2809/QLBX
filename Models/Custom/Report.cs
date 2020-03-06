@@ -9,15 +9,15 @@ namespace QLBX.Models.Custom
 
     public class Report : CheckInOut
     {
-        private int _Time;
+        private double _Time;
 
-        public int Time
+        public double Time
         {
             get
             {
                 if (checkOutTime != null)
                 {
-                    return (Convert.ToInt32(checkOutTime.Value.Hour)) - (Convert.ToInt32(checkInTime.Value.Hour));
+                    return Math.Round((checkOutTime.Value.Subtract(checkInTime.Value).TotalHours),2);
                 }
                 return 0;
             }

@@ -8,7 +8,7 @@
       xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
       xmlns:Emgui="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="1000"
+      d:DesignHeight="550" d:DesignWidth="1000"
 	  Title="CheckInOutPage" 
       DataContext="{StaticResource vmCheckInOut}"
       Name="page">
@@ -45,6 +45,141 @@
                 <ColumnDefinition Width="1.65*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
+            <!--checkOutPopup-->
+            <materialDesign:DialogHost
+                Background="White"
+                IsOpen="{Binding IsChkOutOpen,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                Margin="5">
+                <materialDesign:DialogHost.DialogContent>
+                    <Grid Width="300" Height="auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="20"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FF607D8B">
+                            <TextBlock Width="5"/>
+                            <materialDesign:PackIcon Kind="Details" Width="25" Height="25" Foreground="White" VerticalAlignment="Center"/>
+                            <TextBlock FontSize="15" Text=" Thông tin xe ra" VerticalAlignment="Center" Foreground="White"/>
+                            <TextBlock Width="180"/>
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                                    Height="20" Width="20" Background="White" Command="{Binding CloseDetail_Command}"
+                                    BorderBrush="{x:Null}" BorderThickness="0" materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                                <materialDesign:PackIcon Kind="Close" Foreground="#FF607D8B"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5">
+                            <TextBox Width="250"
+                                     Margin="5"
+                                     IsReadOnly="True"
+                                     materialDesign:HintAssist.Hint="Biển số"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding SelectedItem.license,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"/>
+                            <TextBox Width="250"
+                                     Margin="5"
+                                     IsReadOnly="True"
+                                     materialDesign:HintAssist.Hint="Thẻ xe"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding SelectedItem.cardId,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"/>
+                            <TextBox Width="250"
+                                     Margin="5"
+                                     IsReadOnly="True"
+                                     materialDesign:HintAssist.Hint="Loại xe"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding SelectedItem.Price.veh_type,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"/>
+                            <TextBox Width="250"
+                                     Margin="5"
+                                     IsReadOnly="True"
+                                     materialDesign:HintAssist.Hint="Giá gửi (đ)"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding SelectedItem.Price.price1,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <TextBlock Width="10"/>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="0 8 8 0"
+                                Command="{Binding CheckOut_Command}"
+                                Content="XÁC NHẬN">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding CheckOut_Command}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="0 8 8 0"
+                                Command="{Binding CloseDetail_Command}"
+                                Content="HỦY">
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:DialogHost.DialogContent>
+            </materialDesign:DialogHost>
+            <!--checkInPopup-->
+            <materialDesign:DialogHost
+                Background="White"
+                IsOpen="{Binding IsChkInOpen,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                Margin="5">
+                <materialDesign:DialogHost.DialogContent>
+                    <Grid Width="300" Height="auto">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition Height="20"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FF607D8B">
+                            <TextBlock Width="5"/>
+                            <materialDesign:PackIcon Kind="Details" Width="25" Height="25" Foreground="White" VerticalAlignment="Center"/>
+                            <TextBlock FontSize="15" Text=" Thông tin xe vào" VerticalAlignment="Center" Foreground="White"/>
+                            <TextBlock Width="180"/>
+                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}"
+                                    Height="20" Width="20" Background="White" Command="{Binding CloseDetail_Command}"
+                                    BorderBrush="{x:Null}" BorderThickness="0" materialDesign:ShadowAssist.ShadowDepth="Depth0">
+                                <materialDesign:PackIcon Kind="Close" Foreground="#FF607D8B"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="5">
+                            <TextBox Width="250"
+                                     Margin="5"
+                                     IsReadOnly="True"
+                                     materialDesign:HintAssist.Hint="Biển số"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding BiensoNhandang,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"/>
+                            <TextBox Width="250"
+                                     Margin="5"
+                                     IsReadOnly="True"
+                                     materialDesign:HintAssist.Hint="Thẻ xe"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding Thexe,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"/>
+                            <TextBox Width="250"
+                                     Margin="5"
+                                     IsReadOnly="True"
+                                     materialDesign:HintAssist.Hint="Loại xe"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding SelectedType.veh_type,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <TextBlock Width="10"/>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="0 8 8 0"
+                                Content="XÁC NHẬN">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding CheckIn_Command}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                Margin="0 8 8 0"
+                                Command="{Binding CloseDetail_Command}"
+                                Content="HỦY">
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:DialogHost.DialogContent>
+            </materialDesign:DialogHost>
 
             <Grid Grid.Column="0" Margin="20">
                 <Grid.RowDefinitions>
@@ -98,7 +233,7 @@
                                FontWeight="SemiBold" 
                                Foreground="Red" 
                                Width="auto" 
-                               VerticalAlignment="Center" 
+                               VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
                     </materialDesign:Card>
                 </Grid>
@@ -210,7 +345,7 @@
                     <Button Grid.Column="2" VerticalAlignment="Top" Height="45" Background="#FFF23B3B">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding CheckOut_Command}"/>
+                                <i:InvokeCommandAction Command="{Binding OpenChkOut_Command}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <StackPanel Orientation="Horizontal">
@@ -222,7 +357,7 @@
                     <Button Grid.Column="0" VerticalAlignment="Top" Height="45" Background="#FF2DBB47">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <i:InvokeCommandAction Command="{Binding CheckIn_Command}"/>
+                                <i:InvokeCommandAction Command="{Binding OpenChkIn_Command}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                         <StackPanel Orientation="Horizontal">

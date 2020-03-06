@@ -116,7 +116,7 @@ namespace QLBX.Views.Pages
                     Image<Bgr, byte> src = new Image<Bgr, byte>(PlateImagesList[0].ToBitmap());
                     Bitmap grayframe;
                     Bitmap color;
-                    //
+                    //Tìm biên
                     int c = clsBSoft.IdentifyContours(src.ToBitmap(), 50, false, out grayframe, out color, out listRect);
                     pic1.Image = color;
                     pic2.Image = grayframe;
@@ -268,7 +268,7 @@ namespace QLBX.Views.Pages
             }
             catch (Exception)
             {
-                System.Windows.MessageBox.Show("Tràn RAM");
+                System.Windows.MessageBox.Show("tràn RAM");
             }
 
         }
